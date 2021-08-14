@@ -45,7 +45,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         barcode.setText(Integer.toString(product.getProductID()));
         name.setText(product.getProductName());
         quantity.setText("1");
+
         price.setText(Double.toString(product.getProductPrice()));
+
         setPosition(holder.getPosition());
 
     }
