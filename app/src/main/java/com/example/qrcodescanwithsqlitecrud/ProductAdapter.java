@@ -40,11 +40,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView price = holder.productPrice;
         ImageView image = holder.productImage;
 
-        Picasso.with(holder.productImage.getContext()).load(product.getProductImageURL()).into(image);
+        Picasso.with(holder.itemView.getContext()).load(product.getProductImageURL()).into(image);
+        Picasso.with(holder.itemView.getContext()).setLoggingEnabled(true);
         barcode.setText(Integer.toString(product.getProductID()));
         name.setText(product.getProductName());
         quantity.setText("1");
         price.setText(Double.toString(product.getProductPrice()));
+        setPosition(holder.getPosition());
 
     }
 
