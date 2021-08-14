@@ -41,7 +41,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         ImageView image = holder.productImage;
 
         Picasso.with(holder.itemView.getContext()).load(product.getProductImageURL()).into(image);
-        Picasso.with(holder.itemView.getContext()).setLoggingEnabled(true);
         barcode.setText(Integer.toString(product.getProductID()));
         name.setText(product.getProductName());
         quantity.setText("1");

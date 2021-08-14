@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,29 +32,31 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton floatingActionButton = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.recycler_view);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(MainActivity.this);
-                intentIntegrator.initiateScan();
-            }
-
-            protected void onActivityResult(int result, int requestCode, int resultCode, Intent data) {
-
-                MainActivity.super.onActivityResult(requestCode, resultCode, data);
-            }
-        });
         productList = new ArrayList<>();
-
-        for (int i=0;i<10;i++) {
-            productList.add(new Product(i+1, "ABC",100,"https://i.imgur.com/5zpAsGl.jpg",12.5));
-        }
-
 
         recyclerView.setAdapter(new ProductAdapter(productList));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         registerForContextMenu(recyclerView);
+    }
+
+    public void scanButton(View v) {
+        IntentIntegrator intentIntegrator = new IntentIntegrator(MainActivity.this);
+        intentIntegrator.initiateScan();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult resultIntent = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (resultIntent != null) {
+            if (resultIntent.getContents()!=null) {
+                System.out.println(resultIntent.getContents());
+            }
+            else {
+                System.out.println("Content is null");
+            }
+        } else {
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
