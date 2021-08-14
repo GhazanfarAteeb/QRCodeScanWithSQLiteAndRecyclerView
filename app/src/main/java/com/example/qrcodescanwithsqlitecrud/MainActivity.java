@@ -46,16 +46,14 @@ public class MainActivity extends AppCompatActivity {
         });
         productList = new ArrayList<>();
 
-
-        productList.add(new Product(1, "ABC",100,"https://i.ibb.co/z5QV8tm/download.png",12.5));
-        productList.add(new Product(2, "ABC",100,"https://i.ibb.co/z5QV8tm/download.png",12.5));
-        productList.add(new Product(3, "ABC",100,"https://i.ibb.co/z5QV8tm/download.png",12.5));
-        productList.add(new Product(4, "ABC",100,"https://i.ibb.co/z5QV8tm/download.png",12.5));
-        for (Product p: productList) {
-            System.out.println(p.getProductID());
+        for (int i=0;i<10;i++) {
+            productList.add(new Product(i+1, "ABC",100,"https://i.imgur.com/5zpAsGl.jpg",12.5));
         }
+
+
         recyclerView.setAdapter(new ProductAdapter(productList));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         registerForContextMenu(recyclerView);
     }
 }
