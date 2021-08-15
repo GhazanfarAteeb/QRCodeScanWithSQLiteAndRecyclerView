@@ -17,7 +17,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProductAdapter.Edit {
     RecyclerView recyclerView;
     List<Product> productList;
     @Override
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         productList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            productList.add(new Product(i,"ABC",100,"https://i.ibb.co/z5QV8tm/download.png",12.5));
+            productList.add(new Product(i,"ABC",1,"https://i.ibb.co/z5QV8tm/download.png",12.5));
         }
         recyclerView.setAdapter(new ProductAdapter(productList));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -56,5 +56,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void editData(int position) {
+        Product product = productList.get(position);
+
+        EditData editData = new EditData();
+        EditData.DataListener dataListener = new EditData.DataListener() {
+
+            @Override
+            public Bundle ReceiveData() {
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("barcode",product.getProductID());
+                bundle.putString("name",product.getProductName());
+                bundle.putDouble("price",product.getProductPrice());
+                bundle.putString("URL",product.getProductImageURL());
+                return bundle;
+            }
+        };
+        editData.setDataListener(dataListener);
+        editData.show(getSupportFragmentManager(),"Edit");
     }
 }
