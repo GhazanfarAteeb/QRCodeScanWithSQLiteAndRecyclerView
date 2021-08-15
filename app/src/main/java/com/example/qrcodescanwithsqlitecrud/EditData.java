@@ -50,7 +50,13 @@ public class EditData extends AppCompatDialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Bundle data = new Bundle();
+                        data.putInt("barcode",Integer.parseInt(barcode.getText().toString()));
+                        data.putString("name",name.getText().toString());
+                        data.putDouble("price",Double.parseDouble(price.getText().toString()));
+                        data.putInt("quantity",Integer.parseInt(quantity.getText().toString()));
+                        data.putString("URL", bundle.getString("URL"));
+                        passDataListener.sendData(data);
                     }
                 });
         return builder.create();

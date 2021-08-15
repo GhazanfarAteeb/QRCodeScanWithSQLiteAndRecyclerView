@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
         recyclerView = findViewById(R.id.recycler_view);
 
         productList = new ArrayList<>();
+
+        //TODO -- DATABASE WORK
         for (int i = 0; i < 10; i++) {
             productList.add(new Product(i,"ABC",1,"https://i.ibb.co/z5QV8tm/download.png",12.5));
         }
@@ -78,5 +80,20 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
         };
         editData.setDataListener(dataListener);
         editData.show(getSupportFragmentManager(),"Edit");
+
+        EditData.PassData getUpdatedDataListener = new EditData.PassData() {
+            @Override
+            public void sendData(Bundle bundle) {
+                Product product = productList.get(bundle.getInt("barcode"));
+                product.setProductQuantity(bundle.getInt("quantity"));
+                productList.set(bundle.getInt("barcode"),product);
+                /*
+                 * TODO -- Adding database here
+                 */
+                recyclerView.setAdapter(new ProductAdapter(productList));
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            }
+        };
+        editData.setPassDataListener(getUpdatedDataListener);
     }
 }

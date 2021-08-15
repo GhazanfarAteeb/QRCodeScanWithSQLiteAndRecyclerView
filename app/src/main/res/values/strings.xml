@@ -6,4 +6,6 @@
 	<string name="quantity">Quantity</string>
 	<string name="price">Price</string>
 	<string name="price_per_unit">Price Per Unit</string>
+	<string name="edit">Edit</string>
+	<string name="delete">Delete</string>
 </resources>

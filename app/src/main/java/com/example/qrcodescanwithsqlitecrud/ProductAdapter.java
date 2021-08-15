@@ -1,7 +1,9 @@
 package com.example.qrcodescanwithsqlitecrud;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -59,7 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return productList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         public TextView barcode;
         public TextView productName;
         public TextView productQuantity;
@@ -73,6 +75,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             productQuantity = itemView.findViewById(R.id.quantity);
             productImage = itemView.findViewById(R.id.image);
             productPrice = itemView.findViewById(R.id.price);
+
+            itemView.setOnCreateContextMenuListener(this);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,7 +92,44 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             });
         }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            MenuItem edit = menu.add(0, R.id.edit, 0, "Edit");
+            MenuItem delete = menu.add(0, R.id.delete, 1, "Delete");
+            edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Edit listener;
+                    try {
+                        listener = (Edit) v.getContext();
+                        listener.editData(position);
+                    } catch (ClassCastException ex) {
+                        throw new ClassCastException(v.getContext().toString());
+                    }
+                    return true;
+                }
+            });
+            delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Data listener;
+                    try {
+                        listener = (Data) v.getContext();
+                        listener.deleteData(position);
+                    } catch (ClassCastException ex) {
+                        throw new ClassCastException(v.getContext().toString());
+                    }
+
+                    return true;
+                }
+            });
+        }
     }
+
+    public interface Data {
+        void deleteData(int position);
+    }
+
     public interface Edit{
         void editData(int position);
     }
