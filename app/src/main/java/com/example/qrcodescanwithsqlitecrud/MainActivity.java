@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -29,11 +28,12 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.recycler_view);
 
         productList = new ArrayList<>();
-
+        for (int i = 0; i < 10; i++) {
+            productList.add(new Product(i,"ABC",100,"https://i.ibb.co/z5QV8tm/download.png",12.5));
+        }
         recyclerView.setAdapter(new ProductAdapter(productList));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
             else {
                 System.out.println("Content is null");
             }
-        } else {
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

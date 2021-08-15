@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -20,6 +22,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public ProductAdapter(List<Product> productList) {
         this.productList = productList;
     }
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -70,6 +73,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             productQuantity = itemView.findViewById(R.id.quantity);
             productImage = itemView.findViewById(R.id.image);
             productPrice = itemView.findViewById(R.id.price);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(),"On Click Working",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
     }
 }
