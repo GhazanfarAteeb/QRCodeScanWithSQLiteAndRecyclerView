@@ -7,11 +7,45 @@
 	android:onClick="scanButton"
 	tools:context=".MainActivity">
 	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/constraintLayout"
+		android:layout_width="fill_parent"
+		android:layout_height="60sp"
+		android:gravity="center"
+		android:orientation="horizontal"
+		app:layout_anchor="@+id/constraintLayout"
+		app:layout_anchorGravity="center"
+		android:background="@drawable/border"
+		>
+		
+		<TextView
+			android:id="@+id/total"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			android:layout_marginStart="30dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+		
+		<Button
+			android:id="@+id/bill"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="30dp"
+			android:text="@string/bill"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+	
+	
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
 	<androidx.recyclerview.widget.RecyclerView
+		android:layout_marginTop="60sp"
 		android:id="@+id/recycler_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
-	
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/fab"
 		android:layout_width="wrap_content"

@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Locale;
+
+import static android.content.Intent.getIntent;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private List<Product> productList;
@@ -46,9 +49,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         ImageView image = holder.productImage;
 
         Picasso.with(holder.itemView.getContext()).load(product.getProductImageURL()).into(image);
-        barcode.setText(Integer.toString(product.getProductID()));
+
+        barcode.setText(String.format(Locale.getDefault(),"%d", product.getProductID()));
         name.setText(product.getProductName());
-        quantity.setText("1");
+        quantity.setText(String.format(Locale.getDefault(),"%d", product.getProductQuantity()));
 
         price.setText(Double.toString(product.getProductPrice()));
 
