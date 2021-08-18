@@ -20,12 +20,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME +
-                "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "ProductName TEXT NOT NULL," +
-                "Quantity INTEGER NOT NULL," +
-                "Price DOUBLE NOT NULL," +
-                "ImageURL TEXT NOT NULL)"
+        db.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
+                COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COL_2 + " TEXT NOT NULL," +
+                COL_3 + " INTEGER NOT NULL," +
+                COL_4 + " DOUBLE NOT NULL," +
+                COL_5 + " TEXT NOT NULL)"
         );
     }
 

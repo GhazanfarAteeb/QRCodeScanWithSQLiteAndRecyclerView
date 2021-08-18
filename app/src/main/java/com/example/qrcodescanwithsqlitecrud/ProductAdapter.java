@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,8 +16,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
-
-import static android.content.Intent.getIntent;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private List<Product> productList;
@@ -48,13 +45,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView price = holder.productPrice;
         ImageView image = holder.productImage;
 
-        Picasso.with(holder.itemView.getContext()).load(product.getProductImageURL()).into(image);
+        if (!product.getProductImageURL().isEmpty()) {
+            Picasso.with(holder.itemView.getContext()).load(product.getProductImageURL()).into(image);
+        }
 
         barcode.setText(String.format(Locale.getDefault(),"%d", product.getProductID()));
         name.setText(product.getProductName());
         quantity.setText(String.format(Locale.getDefault(),"%d", product.getProductQuantity()));
-
-        price.setText(Double.toString(product.getProductPrice()));
+        double totalPrice = product.getProductPrice() * product.getProductQuantity();
+        price.setText(String.format(Locale.getDefault(),"%.2f", totalPrice));
 
         setPosition(holder.getPosition());
 
@@ -82,16 +81,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
             itemView.setOnCreateContextMenuListener(this);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Edit listener;
-                    try {
-                        listener = (Edit) v.getContext();
-                        listener.editData(Integer.parseInt(barcode.getText().toString()));
-                    } catch (ClassCastException ex) {
-                        throw new ClassCastException(v.getContext().toString());
-                    }
+            itemView.setOnClickListener(v -> {
+                Edit listener;
+                try {
+                    listener = (Edit) v.getContext();
+                    listener.editData(position);
+                } catch (ClassCastException ex) {
+                    throw new ClassCastException(v.getContext().toString());
                 }
             });
         }
@@ -100,32 +96,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             MenuItem edit = menu.add(0, R.id.edit, 0, "Edit");
             MenuItem delete = menu.add(0, R.id.delete, 1, "Delete");
-            edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Edit listener;
-                    try {
-                        listener = (Edit) v.getContext();
-                        listener.editData(position);
-                    } catch (ClassCastException ex) {
-                        throw new ClassCastException(v.getContext().toString());
-                    }
-                    return true;
+            edit.setOnMenuItemClickListener(item -> {
+                Edit listener;
+                try {
+                    listener = (Edit) v.getContext();
+                    listener.editData(position);
+                } catch (ClassCastException ex) {
+                    throw new ClassCastException(v.getContext().toString());
                 }
+                return true;
             });
-            delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Data listener;
-                    try {
-                        listener = (Data) v.getContext();
-                        listener.deleteData(position);
-                    } catch (ClassCastException ex) {
-                        throw new ClassCastException(v.getContext().toString());
-                    }
-
-                    return true;
+            delete.setOnMenuItemClickListener(item -> {
+                Data listener;
+                try {
+                    listener = (Data) v.getContext();
+                    listener.deleteData(position);
+                } catch (ClassCastException ex) {
+                    throw new ClassCastException(v.getContext().toString());
                 }
+
+                return true;
             });
         }
     }

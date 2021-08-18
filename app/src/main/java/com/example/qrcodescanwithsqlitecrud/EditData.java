@@ -2,7 +2,6 @@ package com.example.qrcodescanwithsqlitecrud;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 
 public class EditData extends AppCompatDialogFragment {
@@ -33,31 +34,30 @@ public class EditData extends AppCompatDialogFragment {
         EditText price = view.findViewById(R.id.price);
         ImageView image = view.findViewById(R.id.image);
 
-        barcode.setText(Integer.toString(bundle.getInt("barcode")));
+        barcode.setText(String.format(Locale.getDefault(),"%d",bundle.getInt("barcode")));
         name.setText(bundle.getString("name"));
-        price.setText(Double.toString(bundle.getDouble("price")));
-        Picasso.with(view.getContext()).load(bundle.getString("URL")).into(image);
-        quantity.setText("1");
+        price.setText(String.format(Locale.getDefault(),"%.2f",bundle.getDouble("price")));
+
+        if (!bundle.getString("URL").isEmpty()) {
+            Picasso.with(view.getContext()).load(bundle.getString("URL")).into(image);
+        }
+
+        quantity.setText(String.format(Locale.getDefault(),"%d",bundle.getInt("quantity")));
 
         builder.setView(view)
                 .setTitle("Edit")
-                .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton("Cancel", (dialog, which) -> {
 
-                    }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Bundle data = new Bundle();
-                        data.putInt("barcode",Integer.parseInt(barcode.getText().toString()));
-                        data.putString("name",name.getText().toString());
-                        data.putDouble("price",Double.parseDouble(price.getText().toString()));
-                        data.putInt("quantity",Integer.parseInt(quantity.getText().toString()));
-                        data.putString("URL", bundle.getString("URL"));
-                        passDataListener.sendData(data);
-                    }
+                .setPositiveButton("OK", (dialog, which) -> {
+                    Bundle data = new Bundle();
+                    data.putInt("position",bundle.getInt("position"));
+                    data.putInt("barcode",Integer.parseInt(barcode.getText().toString()));
+                    data.putString("name",name.getText().toString());
+                    data.putDouble("price",Double.parseDouble(price.getText().toString()));
+                    data.putInt("quantity",Integer.parseInt(quantity.getText().toString()));
+                    data.putString("URL", bundle.getString("URL"));
+                    passDataListener.sendData(data);
                 });
         return builder.create();
     }

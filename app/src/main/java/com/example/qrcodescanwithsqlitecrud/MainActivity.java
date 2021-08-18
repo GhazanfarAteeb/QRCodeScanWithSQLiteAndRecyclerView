@@ -19,6 +19,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ProductAdapter.Edit {
     RecyclerView recyclerView;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         textView = findViewById(R.id.total);
-        textView.setText("Total: Rs. 0");
+        textView.setText(String.format(Locale.getDefault(),"Total: Rs. %.2f",calculateTotal()));
 
         registerForContextMenu(recyclerView);
     }
@@ -66,13 +67,28 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
         IntentResult resultIntent = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (resultIntent != null) {
             if (resultIntent.getContents()!= null) {
-                cursor = openHelper.getReadableDatabase().rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_NAME+" WHERE productID="+Integer.parseInt(resultIntent.getContents()),null);
+                cursor = openHelper.getReadableDatabase().rawQuery(
+                        "SELECT * FROM "+DatabaseHelper.TABLE_NAME
+                        +" WHERE " +
+                        DatabaseHelper.COL_1+"="+Integer.parseInt(resultIntent.getContents()),
+                        null);
 
                 if(cursor.getCount()!= 0) {
-                    productList.add(new Product(cursor.getInt(0),cursor.getString(1),1,cursor.getString(3),cursor.getDouble(4)));
-                    recyclerView.setAdapter(new ProductAdapter(productList));
+                    while(cursor.moveToNext()) {
+                        productList.add(
+                                new Product(
+                                        cursor.getInt(0),
+                                        cursor.getString(1),
+                                        1,
+                                        cursor.getString(4),
+                                        cursor.getDouble(3)
+                                )
+                        );
+                    }
 
-                    textView.setText("Total: Rs." + calculateTotal());
+                    textView.setText(String.format(Locale.getDefault(),"Total: Rs. %.2f",calculateTotal()));
+
+                    recyclerView.setAdapter(new ProductAdapter(productList));
                 }
             }
             else {
@@ -90,12 +106,12 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
         EditData editData = new EditData();
         EditData.DataListener dataListener = () -> {
             Bundle bundle = new Bundle();
-
+            bundle.putInt("position",position);
             bundle.putInt("barcode",product.getProductID());
             bundle.putString("name",product.getProductName());
             bundle.putDouble("price",product.getProductPrice());
             bundle.putString("URL",product.getProductImageURL());
-
+            bundle.putInt("quantity",product.getProductQuantity());
             return bundle;
         };
 
@@ -103,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
         editData.show(getSupportFragmentManager(),"Edit");
 
         EditData.PassData getUpdatedDataListener = (bundle) -> {
-            Product product1 = productList.get(bundle.getInt("barcode"));
+            Product product1 = productList.get(bundle.getInt("position"));
             product1.setProductQuantity(bundle.getInt("quantity"));
-            productList.set(bundle.getInt("barcode"), product1);
+            productList.set(bundle.getInt("position"), product1);
 
-            textView.setText("Total: Rs. " + calculateTotal());
+            textView.setText(String.format(Locale.getDefault(),"Total: Rs. %.2f",calculateTotal()));
             recyclerView.setAdapter(new ProductAdapter(productList));
             recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         };
