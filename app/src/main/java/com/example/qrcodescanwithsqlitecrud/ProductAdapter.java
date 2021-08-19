@@ -107,9 +107,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 return true;
             });
             delete.setOnMenuItemClickListener(item -> {
-                Data listener;
+                Delete listener;
                 try {
-                    listener = (Data) v.getContext();
+                    listener = (Delete) v.getContext();
                     listener.deleteData(position);
                 } catch (ClassCastException ex) {
                     throw new ClassCastException(v.getContext().toString());
@@ -120,7 +120,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
-    public interface Data {
+    public interface Delete {
         void deleteData(int position);
     }
 

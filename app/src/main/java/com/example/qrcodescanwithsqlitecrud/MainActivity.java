@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements ProductAdapter.Edit {
+public class MainActivity extends AppCompatActivity implements ProductAdapter.Edit,ProductAdapter.Delete {
     RecyclerView recyclerView;
     List<Product> productList;
     SQLiteOpenHelper openHelper;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult resultIntent = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (resultIntent != null) {
-            if (resultIntent.getContents()!= null) {
+            if (!resultIntent.getContents().isEmpty()&& !resultIntent.getContents().equals(" ")) {
                 cursor = openHelper.getReadableDatabase().rawQuery(
                         "SELECT * FROM "+DatabaseHelper.TABLE_NAME
                         +" WHERE " +
@@ -74,17 +74,32 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
                         null);
 
                 if(cursor.getCount()!= 0) {
-                    while(cursor.moveToNext()) {
-                        productList.add(
-                                new Product(
-                                        cursor.getInt(0),
-                                        cursor.getString(1),
-                                        1,
-                                        cursor.getString(4),
-                                        cursor.getDouble(3)
-                                )
-                        );
-                    }
+
+                        while(cursor.moveToNext()) {
+                            int index = -1;
+                            for (Product p: productList){
+                                if (p.getProductID()==cursor.getInt(0)) {
+                                    index = productList.indexOf(p);
+                                }
+                            }
+                            if (index == -1) {
+                                productList.add(
+                                        new Product(
+                                                cursor.getInt(0),
+                                                cursor.getString(1),
+                                                1,
+                                                cursor.getString(4),
+                                                cursor.getDouble(3)
+                                        )
+                                );
+                            } else {
+                                productList.get(index).setProductQuantity(productList.get(index).getProductQuantity() + 1);
+                                textView.setText(String.format(Locale.getDefault(),"Total: Rs. %.2f",calculateTotal()));
+
+                                recyclerView.setAdapter(new ProductAdapter(productList));
+                            }
+                        }
+
 
                     textView.setText(String.format(Locale.getDefault(),"Total: Rs. %.2f",calculateTotal()));
 
@@ -128,5 +143,13 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
             recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         };
         editData.setPassDataListener(getUpdatedDataListener);
+    }
+
+    @Override
+    public void deleteData(int position) {
+        productList.remove(position);
+        textView.setText(String.format(Locale.getDefault(),"Total: Rs. %.2f",calculateTotal()));
+        recyclerView.setAdapter(new ProductAdapter(productList));
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 }
