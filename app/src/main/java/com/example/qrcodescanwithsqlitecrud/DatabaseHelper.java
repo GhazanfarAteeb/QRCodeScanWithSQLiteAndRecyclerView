@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+
+// class for helping in database making
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DB = "product.db";
     public static final String TABLE_NAME = "products";
@@ -18,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DB, null, 1);
     }
 
+    // SQL Query to create the database
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
@@ -29,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    // SQL Query when there is update in the database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
