@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
     private double calculateTotal() {
         double total = 0;
         for (Product p: productList) {
-            total += (p.getProductPrice()*p.getProductQuantity());
+            total += (p.getProductPrice() * p.getProductQuantity());
         }
         return total;
     }
