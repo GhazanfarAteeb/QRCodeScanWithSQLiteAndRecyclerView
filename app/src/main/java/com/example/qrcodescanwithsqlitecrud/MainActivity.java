@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        openHelper = new DatabaseHelper(this);
+        openHelper = new ProductDatabaseHelper(this);
 
         // setting permissions for the app
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.Ed
             if (!resultIntent.getContents().isEmpty()&& !resultIntent.getContents().equals(" ")) {
                 // SQL query
                 cursor = openHelper.getReadableDatabase().rawQuery(
-                        "SELECT * FROM "+DatabaseHelper.TABLE_NAME
+                        "SELECT * FROM "+ ProductDatabaseHelper.TABLE_NAME
                         +" WHERE " +
-                        DatabaseHelper.COL_1+"="+Integer.parseInt(resultIntent.getContents()),
+                        ProductDatabaseHelper.COL_1+"="+Integer.parseInt(resultIntent.getContents()),
                         null);
 
                 // if the product is in the database

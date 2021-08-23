@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 // class for helping in database making
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class ProductDatabaseHelper extends SQLiteOpenHelper {
     public static final String DB = "product.db";
     public static final String TABLE_NAME = "products";
     public static final String COL_1 = "ID";
@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_4 = "Price";
     public static final String COL_5 = "ImageURL";
 
-    public DatabaseHelper(Context context) {
+    public ProductDatabaseHelper(Context context) {
         super(context, DB, null, 1);
     }
 
