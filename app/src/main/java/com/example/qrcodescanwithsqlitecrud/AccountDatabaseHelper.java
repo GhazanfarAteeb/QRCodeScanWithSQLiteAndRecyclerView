@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * this class will help in making account details for login and keeping the record managed
+ */
 public class AccountDatabaseHelper extends SQLiteOpenHelper {
     public final static String DB = "products.db";
     public static final String TABLE_NAME = "accounts";
