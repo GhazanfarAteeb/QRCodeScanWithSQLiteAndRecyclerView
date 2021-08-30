@@ -10,12 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SalesDatabaseHelper extends SQLiteOpenHelper {
     public static final String DB = "products.db";
-    public static final String TABLE_NAME="sales";
-    public static final String COL_1="ProductID";
-    public static final String COL_2 = "ProductName";
-    public static final String COL_3 = "Quantity";
-    public static final String COL_4 = "Price";
-    public static final String COL_5 = "ImageURL";
+    public static final String TABLE_NAME = "sales";
+    public static final String COL_1 = "ID";
+    public static final String COL_2 = "ProductID";
+    public static final String COL_3 = "ProductName";
+    public static final String COL_4 = "Quantity";
+    public static final String COL_5 = "Price";
+    public static final String COL_6 = "ImageURL";
 
     SalesDatabaseHelper(Context context) {
         super(context, DB, null, 1);
@@ -24,10 +25,12 @@ public class SalesDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
                 COL_1 + " INTEGER PRIMARY KEY," +
-                COL_2 + " TEXT NOT NULL," +
-                COL_3 + " INTEGER NOT NULL," +
-                COL_4 + " DOUBLE NOT NULL," +
-                COL_5 + " TEXT NOT NULL)"
+                COL_2 + " INTEGER NOT NULL," +
+                COL_3 + " TEXT NOT NULL," +
+                COL_4 + " INTEGER NOT NULL," +
+                COL_5 + " DOUBLE NOT NULL," +
+                COL_6 + " TEXT NOT NULL" +
+            ")"
         );
     }
 

@@ -15,12 +15,21 @@ public class OrdersDatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2 = "status";
     public static final String COL_3 = "on_create";
     public static final String COL_4 = "on_update";
+
     OrdersDatabaseHelper(Context context) {
         super(context, DB,null, 1);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(
+                "CREATE TABLE "+ TABLE_NAME+"("+
+                    COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    COL_2 + " TEXT NOT NULL, "+
+                    COL_3 + " DATETIME NOT NULL, "+
+                    COL_4 + " DATETIME NOT NULL" +
+                ")"
+        );
     }
 
     @Override

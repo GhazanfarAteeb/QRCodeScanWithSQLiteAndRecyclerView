@@ -23,12 +23,14 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
     // SQL Query to create the database
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
-                COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COL_2 + " TEXT NOT NULL," +
-                COL_3 + " INTEGER NOT NULL," +
-                COL_4 + " DOUBLE NOT NULL," +
-                COL_5 + " TEXT NOT NULL)"
+        db.execSQL(
+                "CREATE TABLE " + TABLE_NAME + "(" +
+                    COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COL_2 + " TEXT NOT NULL," +
+                    COL_3 + " INTEGER NOT NULL," +
+                    COL_4 + " DOUBLE NOT NULL," +
+                    COL_5 + " TEXT NOT NULL" +
+                ")"
         );
     }
 
