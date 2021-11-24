@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * this sales class will contains information of the sales done
  */
 
+// Adding comments for usama kali gugffah
+
 public class SalesDatabaseHelper extends SQLiteOpenHelper {
     public static final String DB = "products.db";
     public static final String TABLE_NAME = "sales";

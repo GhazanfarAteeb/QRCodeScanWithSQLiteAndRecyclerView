@@ -9,4 +9,5 @@
 	<string name="delete">Delete</string>
 	<string name="bill">bill</string>
 	<string name="product_id">Product ID</string>
+	<string name="short_description">Short Description</string>
 </resources>
